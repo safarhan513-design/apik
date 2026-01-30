@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>TikTok Tool</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
+body{
+  background:#0b0b0b;
+  color:#fff;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh
+}
+.box{
+  width:340px;
+  background:#111;
+  border-radius:16px;
+  padding:20px;
+  box-shadow:0 0 30px rgba(255,0,80,.4)
+}
+h1{text-align:center;color:#ff0050;margin-bottom:15px}
+input,button{
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:10px;
+  margin-bottom:12px
+}
+input{background:#1c1c1c;color:#fff}
+button{background:#ff0050;font-weight:bold;cursor:pointer}
+.hidden{display:none}
+.error{
+  color:#ff4444;
+  text-align:center;
+  font-size:14px;
+  margin-top:5px
+}
+.counter{
+  font-size:32px;
+  text-align:center;
+  color:#00ffcc;
+  margin-top:10px
+}
+.status{text-align:center;color:#aaa;font-size:14px}
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN -->
+<div class="box" id="loginBox">
+  <h1>Login</h1>
+  <input id="user" placeholder="Username">
+  <input id="pass" type="password" placeholder="Password">
+  <button onclick="login()">Masuk</button>
+  <div class="error" id="error"></div>
+  <div class="status">Mode simulasi • offline</div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="box hidden" id="dashBox">
+  <h1>Followers Simulator</h1>
+  <input id="target" type="number" placeholder="Target Followers">
+  <button onclick="start()">Start</button>
+  <div class="counter" id="count">0</div>
+  <div class="status" id="status">Status: idle</div>
+</div>
+
+<script>
+// DATA LOGIN SIMULASI
+const USER = "admin";
+const PASS = "1234";
+
+function login(){
+  const u = document.getElementById("user").value;
+  const p = document.getElementById("pass").value;
+  const err = document.getElementById("error");
+
+  if(u === USER && p === PASS){
+    document.getElementById("loginBox").classList.add("hidden");
+    document.getElementById("dashBox").classList.remove("hidden");
+  }else{
+    err.innerText = "❌ Username atau Password salah";
+  }
+}
+
+// SIMULATOR FOLLOWERS
+let cur=0, tar=0, iv;
+function start(){
+  tar = parseInt(document.getElementById("target").value)||1000;
+  cur=0;
+  document.getElementById("status").innerText="Status: processing...";
+  clearInterval(iv);
+  iv=setInterval(()=>{
+    if(cur>=tar){
+      document.getElementById("status").innerText="Status: completed (simulasi)";
+      clearInterval(iv);
+    }else{
+      cur+=Math.floor(Math.random()*15)+1;
+      document.getElementById("count").innerText=cur.toLocaleString();
+    }
+  },100);
+}
+</script>
+
+</body>
+</html>
